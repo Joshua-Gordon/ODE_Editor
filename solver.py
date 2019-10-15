@@ -8,7 +8,6 @@ class Solver(object):
         self.conditions = collections.OrderedDict()
         self.start = 0
         self.stop = 1
-        self.step = 1
 
     def addVar(self, v):
         if v in self.equations:
@@ -29,12 +28,15 @@ def model(t,Y):
         exec(code,globals())
         if progress_cb is not None:
             def report(t,Y):
-                progress_cb(Y)
+                progress_cb(t, Y)
                 return True
             solution = solve_ivp(model,[self.start,self.stop],list(self.conditions.values()), events=report)
         else:
             solution = solve_ivp(model,[self.start,self.stop],list(self.conditions.values()))
         return solution
+
+    def __repr__(self):
+        return f'<Solver eq={self.equations!r} co={self.conditions!r}>'
 
 def test_solver():
     s = Solver()
