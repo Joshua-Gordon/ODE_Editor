@@ -59,7 +59,6 @@ def test_solver():
     s.conditions["theta"] = 3
     s.conditions["omega"] = 0
     sol = s.solve()
-    #sol = s.solve(progress_cb=print)
     print(s.toJSON())
     j = s.toJSON()
     t = Solver()

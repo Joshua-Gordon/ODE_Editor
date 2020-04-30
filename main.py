@@ -16,7 +16,7 @@ class OEqnModel(QAbstractTableModel):
 
     def columnCount(self, parent):
         return 2
-    
+
     def data(self, idx, role):
         if role in (Qt.DisplayRole, Qt.EditRole):
             row = idx.row()
@@ -165,10 +165,12 @@ class OMainWindow(QMainWindow):
 
     def fsave(self):
         pass
-        
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = OMainWindow()
     win.fnew()
     win.show()
     exit(app.exec_())
+
+#run with python3 only
