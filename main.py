@@ -72,9 +72,10 @@ class OEqnTable(QTableView):
         self.setModel(self.mdl)
 
 class OEqnEditor(QWidget):
-    def __init__(self, slv):
+    def __init__(self, slv, tabs):
         QWidget.__init__(self)
         self.slv = slv
+        self.tabs = tabs
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
@@ -105,7 +106,7 @@ class OEqnEditor(QWidget):
     def vrun(self):
         graph = OGraph(self.slv.equations.keys())
         view = QGraphicsView(graph)
-        self.layout.addWidget(view)
+        self.tabs.addTab(view, "render")
         #view = OGraphView(graph)
         #view.show()
         def cb(t, Y):
@@ -152,18 +153,27 @@ class OMainWindow(QMainWindow):
 
         self.tabs = QTabWidget()
         self.tabs.setTabsClosable(True)
+        self.tabs.tabCloseRequested.connect(self.tclose)
         self.setCentralWidget(self.tabs)
 
         self.fmenu = self.menuBar().addMenu('File')
         self.fmenu.addAction('New', self.fnew)
+        self.fmenu.addAction('Open', self.fopen)
         self.fmenu.addAction('Save', self.fsave)
+
+    def tclose(self, idx):
+        self.tabs.widget(idx).close()
+        self.tabs.removeTab(idx)
 
     def fnew(self):
         slv = solver.Solver()
-        widget = OEqnEditor(slv)
+        widget = OEqnEditor(slv, self.tabs)
         self.tabs.addTab(widget, 'unnamed')
 
     def fsave(self):
+        pass
+
+    def fopen(self):
         pass
 
 if __name__ == '__main__':
